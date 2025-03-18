@@ -57,11 +57,8 @@ def cls():
         _ = system('clear')
 
 def main():
-    snake_map=[]
     map_x = 20
     snake_location = [[0, 0]]
-    last_location = []
-    snake_body = []
     fruit_exist = False
     fruit_location = []
     direction = 'e'
