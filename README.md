@@ -1,5 +1,6 @@
 To run in pycharm:  
-Enable "Emulate terminal in output console"
+- Run in terminal(best)
+- Enable "Emulate terminal in output console"
 
 to do:  
 - add menu

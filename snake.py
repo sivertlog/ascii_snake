@@ -18,8 +18,17 @@ def make_snake_map(map_x, snake_location, f_location):
         snake_map[snake_location[i][0]][snake_location[i][1]] = '█'
     snake_map[f_location[0]][f_location[1]] = '☼'
 
+    display_map(snake_map, map_x, snake_location)
+
+def display_map(snake_map, map_x, snake_location):
+    score = (len(snake_location) - 1) * 10
+    show_score = "[Score: " + str(score) + "]"
+
+    print(f"    ╔{show_score}{'═' * (map_x * 2 + 1 - len(show_score))}╗")
+
     for i in snake_map:
-        print(' '.join(i))
+        print(f"    ║ {' '.join(i)} ║")
+    print(f"    ╚{'═' * (map_x * 2 + 1)}╝")
 
 def new_fruit_location(map_x, snake_location):
     while True:
@@ -56,11 +65,11 @@ def cls():
     else:
         _ = system('clear')
 
-def main():
+def game_loop():
     map_x = 20
     snake_location = [[0, 0]]
-    fruit_exist = False
-    fruit_location = []
+    fruit_location = new_fruit_location(map_x, snake_location)
+    fruit_exist = True
     direction = 'e'
 
     while True:
@@ -74,7 +83,7 @@ def main():
         elif keyboard.is_pressed('left'):
             if direction != 'e': direction = 'w'
         elif keyboard.is_pressed('esc'):
-            break
+            return len(snake_location) * 10
 
         time.sleep(.1)
 
@@ -84,13 +93,13 @@ def main():
 
         if eat_tail(snake_location):
             print("Game Over")
-            break
+            return len(snake_location) * 10
 
         if eat_fruit(snake_location[0], fruit_location):
             snake_location.append(list(snake_location[0]))
             fruit_exist = False
 
-        if fruit_exist == False:
+        if not fruit_exist:
             fruit_location = new_fruit_location(map_x, snake_location)
             fruit_exist = True
 
@@ -100,6 +109,53 @@ def main():
         make_snake_map(map_x, snake_location, fruit_location)
         print("Click here, then control snake with arrow keys")
         print(snake_location)
+
+def menu():
+    cls()
+    print(f'''
+
+
+
+        [ASCII]  __  __ ___ ._  ._  _____*                              
+          /  _\ /  |/ // - || |/ / |  __/                          
+         *_\ \ / /|  // /| ||   \  |  _|                    
+          \__//_/ |_//_/ |_||_|\_\ |____\                           
+
+            1) Play Game
+            2) Exit''')
+    try:
+        select = int(input("            Selection: "))
+        if 0 < select < 3:
+            return select
+    except ValueError:
+        return 0
+
+def game_over(score):
+    cls()
+    print(f'''
+    
+    
+    
+        ***GAME OVER***
+        
+        
+        
+        
+         Score: {score}
+         
+         
+''')
+    input("Press ENTER to continue:")
+
+def main():
+    while True:
+        select = menu()
+        if select == 1:
+            score = game_loop()
+            game_over(score)
+        elif select == 2:
+            return
+
 
 if __name__ == '__main__':
     main()
