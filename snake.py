@@ -132,7 +132,8 @@ def menu():
 
 
                 1) Play Game
-                2) Exit''')
+                2) Exit
+''')
     try:
         select = int(input("            Selection: "))
         if 0 < select < 3:
