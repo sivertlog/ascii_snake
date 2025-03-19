@@ -8,12 +8,12 @@ import time
 from os import system, name
 import random
 
-def make_snake_map(map_x, snake_location, f_location, high_score):
+def make_snake_map(map_x, map_y, snake_location, f_location, high_score):
     snake_map = []
-    for i in range(map_x):
+    for i in range(map_y):
         snake_map.append([])
         for j in range(map_x):
-            snake_map[i].append('░')
+            snake_map[i].append(' ')
     for i in range(len(snake_location)):
         snake_map[snake_location[i][0]][snake_location[i][1]] = '█'
     snake_map[f_location[0]][f_location[1]] = '☼'
@@ -41,10 +41,10 @@ def display_map(snake_map, map_x, snake_location, high_score):
     print(f"    ║{' ' * (map_x - len(exit_msg)//2)}{exit_msg}{' ' * (map_x - len(exit_msg)//2)}║")
     print(f"    ╚{'═' * (map_x * 2 + 1)}╝")
 
-def new_fruit_location(map_x, snake_location):
+def new_fruit_location(map_x, map_y, snake_location):
     while True:
         x = [0, 0]
-        x[0] = random.randint(0, map_x-1)
+        x[0] = random.randint(0, map_y-1)
         x[1] = random.randint(0, map_x-1)
         if not x in snake_location: return x
 
@@ -56,13 +56,13 @@ def eat_tail(snake_location):
         return True
     return False
 
-def move_head(direction, snake_location, map_x):
+def move_head(direction, snake_location, map_x, map_y):
     if direction == 'n':
-        snake_location[0][0] = (snake_location[0][0] - 1) % map_x
+        snake_location[0][0] = (snake_location[0][0] - 1) % map_y
     elif direction == 'e':
         snake_location[0][1] = (snake_location[0][1] + 1) % map_x
     elif direction == 's':
-        snake_location[0][0] = (snake_location[0][0] + 1) % map_x
+        snake_location[0][0] = (snake_location[0][0] + 1) % map_y
     elif direction == 'w':
         snake_location[0][1] = (snake_location[0][1] - 1) % map_x
 
@@ -77,9 +77,10 @@ def cls():
         _ = system('clear')
 
 def game_loop(high_score):
-    map_x = 20
+    map_x = 30
+    map_y = 20
     snake_location = [[0, 0]]
-    fruit_location = new_fruit_location(map_x, snake_location)
+    fruit_location = new_fruit_location(map_x, map_y, snake_location)
     fruit_exist = True
     direction = 'e'
 
@@ -100,7 +101,7 @@ def game_loop(high_score):
 
         #logic
         move_body(snake_location)
-        move_head(direction, snake_location, map_x)
+        move_head(direction, snake_location, map_x, map_y)
 
         if eat_tail(snake_location):
             print("Game Over")
@@ -111,12 +112,12 @@ def game_loop(high_score):
             fruit_exist = False
 
         if not fruit_exist:
-            fruit_location = new_fruit_location(map_x, snake_location)
+            fruit_location = new_fruit_location(map_x, map_y, snake_location)
             fruit_exist = True
 
         #grafix
         cls()
-        make_snake_map(map_x, snake_location, fruit_location, high_score)
+        make_snake_map(map_x, map_y, snake_location, fruit_location, high_score)
 
 def menu():
     cls()
@@ -135,7 +136,7 @@ def menu():
                 2) Exit
 ''')
     try:
-        select = int(input("            Selection: "))
+        select = int(input("                Selection: "))
         if 0 < select < 3:
             return select
     except ValueError:
@@ -159,7 +160,8 @@ def game_over(score, high_score):
          
          
     ''')
-    input("Press ENTER to continue:")
+    a = ''
+    a = input("Press ENTER to continue:")
 
 def main():
     high_score = 0
