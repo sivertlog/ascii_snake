@@ -1,13 +1,10 @@
-To run in pycharm:  
-- Run in terminal(best)
-- Enable "Emulate terminal in output console"
+### ASCII SNAKE
+*by Sivert Log  
+March 2025*
 
-to do:  
-- add menu
-- add score and high score
-- polish game screen
-- make proper game over
+**To run in pycharm:**
+- Install keyboard module
+- Enable 'Emulate terminal in output console'  
+*or*  
+- Run in terminal  
 
-maybe:
-- add threads for smoother input?
-- maybe key listener will help?

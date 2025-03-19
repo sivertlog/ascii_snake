@@ -1,14 +1,14 @@
+#################
+#  ASCII Snake  #
+# by Sivert Log #
+#   March 2025  #
+#################
 import keyboard
 import time
 from os import system, name
 import random
 
-#     ░   █   ☼   ☻
-# maybe try keyboard listeners
-# maybe try threads
-
-
-def make_snake_map(map_x, snake_location, f_location):
+def make_snake_map(map_x, snake_location, f_location, high_score):
     snake_map = []
     for i in range(map_x):
         snake_map.append([])
@@ -18,16 +18,27 @@ def make_snake_map(map_x, snake_location, f_location):
         snake_map[snake_location[i][0]][snake_location[i][1]] = '█'
     snake_map[f_location[0]][f_location[1]] = '☼'
 
-    display_map(snake_map, map_x, snake_location)
+    display_map(snake_map, map_x, snake_location, high_score)
 
-def display_map(snake_map, map_x, snake_location):
+def display_map(snake_map, map_x, snake_location, high_score):
+    control_msg = 'Arrow Keys Control Snake'
+    exit_msg = '***Press q To End Game***'
+    snake_msg = '[ASCII Snake!!]'
     score = (len(snake_location) - 1) * 10
-    show_score = "[Score: " + str(score) + "]"
+    if score > high_score: high_score = score
+    show_score = '[Score: ' + str(score) + ']'
+    show_high = '[High: ' + str(high_score) + ']'
+    score_len = len(show_score) + len(show_high)
 
-    print(f"    ╔{show_score}{'═' * (map_x * 2 + 1 - len(show_score))}╗")
+    print(f"    ╔{'═' * (map_x - len(snake_msg)//2)}{snake_msg}{'═' * (map_x - len(snake_msg)//2)}╗")
+    print(f"    ╠{show_score}{'═' * (map_x * 2 + 1 - score_len)}{show_high}╣")
 
     for i in snake_map:
         print(f"    ║ {' '.join(i)} ║")
+
+    print(f"    ╠{'═' * (map_x * 2 + 1)}╣")
+    print(f"    ║{' ' * (map_x - len(control_msg)//2)}{control_msg}{' ' * (map_x - len(control_msg)//2 + 1)}║")
+    print(f"    ║{' ' * (map_x - len(exit_msg)//2)}{exit_msg}{' ' * (map_x - len(exit_msg)//2)}║")
     print(f"    ╚{'═' * (map_x * 2 + 1)}╝")
 
 def new_fruit_location(map_x, snake_location):
@@ -65,7 +76,7 @@ def cls():
     else:
         _ = system('clear')
 
-def game_loop():
+def game_loop(high_score):
     map_x = 20
     snake_location = [[0, 0]]
     fruit_location = new_fruit_location(map_x, snake_location)
@@ -82,7 +93,7 @@ def game_loop():
             if direction != 'n': direction = 's'
         elif keyboard.is_pressed('left'):
             if direction != 'e': direction = 'w'
-        elif keyboard.is_pressed('esc'):
+        elif keyboard.is_pressed('q'):
             return len(snake_location) * 10
 
         time.sleep(.1)
@@ -105,10 +116,7 @@ def game_loop():
 
         #grafix
         cls()
-
-        make_snake_map(map_x, snake_location, fruit_location)
-        print("Click here, then control snake with arrow keys")
-        print(snake_location)
+        make_snake_map(map_x, snake_location, fruit_location, high_score)
 
 def menu():
     cls()
@@ -116,13 +124,15 @@ def menu():
 
 
 
-        [ASCII]  __  __ ___ ._  ._  _____*                              
+        [ASCII]  __  __ ___ ._  ._  _____*                            
           /  _\ /  |/ // - || |/ / |  __/                          
          *_\ \ / /|  // /| ||   \  |  _|                    
           \__//_/ |_//_/ |_||_|\_\ |____\                           
+           --------------------*by Sivert
 
-            1) Play Game
-            2) Exit''')
+
+                1) Play Game
+                2) Exit''')
     try:
         select = int(input("            Selection: "))
         if 0 < select < 3:
@@ -130,7 +140,7 @@ def menu():
     except ValueError:
         return 0
 
-def game_over(score):
+def game_over(score, high_score):
     cls()
     print(f'''
     
@@ -138,21 +148,26 @@ def game_over(score):
     
         ***GAME OVER***
         
-        
-        
-        
+    ''')
+    if score > high_score:
+        print(f'''
+        New High Score!''')
+    print(f'''
+    
          Score: {score}
          
          
-''')
+    ''')
     input("Press ENTER to continue:")
 
 def main():
+    high_score = 0
     while True:
         select = menu()
         if select == 1:
-            score = game_loop()
-            game_over(score)
+            score = game_loop(high_score)
+            game_over(score, high_score)
+            if score > high_score: high_score = score
         elif select == 2:
             return
 

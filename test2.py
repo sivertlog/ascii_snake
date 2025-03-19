@@ -91,6 +91,7 @@ def main():
 
         make_snake_map(map_x, snake_location, fruit_location)
         print("Click here, then control snake with arrow keys")
+        print("esc to quit")
 
 if __name__ == '__main__':
     main()
