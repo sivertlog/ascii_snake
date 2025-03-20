@@ -48,7 +48,7 @@ the snake; it is a list of coordinates that is applied
 to the map. At the very bottom of `game_loop` there
 is a commented line `#print(snake_location)`. If you
 uncomment this you can get a good visual of how the
-snake list works.  
+snake list works.
 
 If anyone is interested, I would be more than happy
 to add comments to the code explaining everything in
