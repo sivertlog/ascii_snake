@@ -14,7 +14,8 @@ March 2025*
   3) select Python on left pane
   4) click Modify options(top right)
   5) select Emulate terminal in output console
-  6) select OK on the windows to apply
+  6) select OK on the windows to apply  
+
 *or*  
 - Run in terminal  
   - In terminal enter `python snake.py`
