@@ -8,6 +8,7 @@ March 2025*
     - In terminal enter `pip install keyboard`
 
 ### For PyCharm
+Two options to run properly in PyCharm:
 - Enable 'Emulate terminal in output console'  
   1) Main Menu | Run | Edit Configurations
   2) Edit configuration templates(bottom left)
@@ -16,7 +17,7 @@ March 2025*
   5) select Emulate terminal in output console
   6) select OK on the windows to apply  
 
-*or*  
+  ***OR***
 - Run in terminal  
   - In terminal enter `python snake.py`
 
