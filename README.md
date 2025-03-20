@@ -15,7 +15,7 @@ Two options to run properly in PyCharm:
   3) select Python on left pane
   4) click Modify options(*top right*)
   5) select Emulate terminal in output console
-  6) select OK on the windows to apply  
+  6) select OK to apply  
 
   ***OR***
 - Run in terminal
