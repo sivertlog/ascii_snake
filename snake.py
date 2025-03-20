@@ -77,7 +77,7 @@ def cls():
         _ = system('clear')
 
 def game_loop(high_score):
-    MAP_X = 33
+    MAP_X = 30
     MAP_Y = 20
     SPEED = .1
     snake_location = [[0, 0]]
@@ -114,6 +114,7 @@ def game_loop(high_score):
         #grafix
         cls()
         make_snake_map(MAP_X, MAP_Y, snake_location, fruit_location, high_score)
+        #print(snake_location)
 
 def menu():
     cls()
