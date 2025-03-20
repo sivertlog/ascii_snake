@@ -32,7 +32,7 @@ also alter how much the snake grows by changing `GROWTH_AMOUNT`.
 I tried my best to only use what we've learned in class
 up to this point. I made two exceptions to keep the
 game fun. The two exceptions are the keyboard detection
-and the `system('cls')` command to clear the terminal.
+and the `system('cls')` command to clear the terminal.  
 
 The keyboard inputs are super easy to understand,
 they're in the `game_loop` function.
@@ -40,7 +40,8 @@ they're in the `game_loop` function.
 `system('cls')` and `system('clear')` are for
 clearing the screen. It doesn't normally work
 in the run window for PyCharm unless you select
-'Emulate terminal in output console'. Without this
+'Emulate terminal in output console'(*special thanks to
+the folks at stackoverflow.com for this info*). Without this
 the program constantly prints new game maps underneath
 each other, making the game unplayable. With it
 the map appears stationary, so you can
