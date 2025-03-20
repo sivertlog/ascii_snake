@@ -77,11 +77,11 @@ def cls():
         _ = system('clear')
 
 def game_loop(high_score):
-    map_x = 30
-    map_y = 20
+    MAP_X = 33
+    MAP_Y = 20
+    SPEED = .1
     snake_location = [[0, 0]]
-    fruit_location = new_fruit_location(map_x, map_y, snake_location)
-    fruit_exist = True
+    fruit_location = new_fruit_location(MAP_X, MAP_Y, snake_location)
     direction = 'e'
 
     while True:
@@ -97,11 +97,11 @@ def game_loop(high_score):
         elif keyboard.is_pressed('q'):
             return len(snake_location) * 10
 
-        time.sleep(.1)
+        time.sleep(SPEED)
 
         #logic
         move_body(snake_location)
-        move_head(direction, snake_location, map_x, map_y)
+        move_head(direction, snake_location, MAP_X, MAP_Y)
 
         if eat_tail(snake_location):
             print("Game Over")
@@ -109,15 +109,11 @@ def game_loop(high_score):
 
         if eat_fruit(snake_location[0], fruit_location):
             snake_location.append(list(snake_location[0]))
-            fruit_exist = False
-
-        if not fruit_exist:
-            fruit_location = new_fruit_location(map_x, map_y, snake_location)
-            fruit_exist = True
+            fruit_location = new_fruit_location(MAP_X, MAP_Y, snake_location)
 
         #grafix
         cls()
-        make_snake_map(map_x, map_y, snake_location, fruit_location, high_score)
+        make_snake_map(MAP_X, MAP_Y, snake_location, fruit_location, high_score)
 
 def menu():
     cls()
@@ -160,8 +156,8 @@ def game_over(score, high_score):
          
          
     ''')
-    a = ''
-    a = input("Press ENTER to continue:")
+
+    input("Press ENTER to continue:")
 
 def main():
     high_score = 0
