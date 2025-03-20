@@ -70,6 +70,10 @@ def move_body(snake_location):
     for i in range(len(snake_location), 1, -1):
         snake_location[i-1] = list(snake_location[i-2])
 
+def grow_snake(snake_location, grow_amount):
+    for _ in range(grow_amount):
+        snake_location.append(list(snake_location[0]))
+
 def cls():
     if name == 'nt':
         _ = system('cls')
@@ -80,6 +84,7 @@ def game_loop(high_score):
     MAP_X = 30
     MAP_Y = 20
     SPEED = .1
+    GROW_AMOUNT = 1
     snake_location = [[0, 0]]
     fruit_location = new_fruit_location(MAP_X, MAP_Y, snake_location)
     direction = 'e'
@@ -108,7 +113,7 @@ def game_loop(high_score):
             return len(snake_location) * 10
 
         if eat_fruit(snake_location[0], fruit_location):
-            snake_location.append(list(snake_location[0]))
+            grow_snake(snake_location, GROW_AMOUNT)
             fruit_location = new_fruit_location(MAP_X, MAP_Y, snake_location)
 
         #grafix
