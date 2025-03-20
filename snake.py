@@ -12,7 +12,7 @@ def make_snake_map(map_x, map_y, snake_location, f_location, high_score):
     snake_map = []
     for i in range(map_y):
         snake_map.append([])
-        for j in range(map_x):
+        for _ in range(map_x):
             snake_map[i].append(' ')
     for i in range(len(snake_location)):
         snake_map[snake_location[i][0]][snake_location[i][1]] = '█'
