@@ -26,7 +26,8 @@ bottom left of the PyCharm window, above Git and Problems*
 ## Notes:
 The controls aren't perfect, but at the higher speed
 it is harder to notice(I will fix this!) The map is scalable, just change
-the `MAP_X` and `MAP_Y` variables in `game_loop()`
+the `MAP_X` and `MAP_Y` variables in `game_loop()`. You can
+also alter how much the snake grows by changing `GROWTH_AMOUNT`.
 
 I tried my best to only use what we've learned in class
 up to this point. I made two exceptions to keep the
