@@ -14,3 +14,6 @@ print(a[0][0:2])
 c = []
 if c: print("c True")
 if a: print("a True")
+print(a + c)
+a = 3
+print(a)

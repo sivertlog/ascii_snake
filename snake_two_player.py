@@ -14,7 +14,7 @@ def cls():
     else:
         _ = system('clear')
 
-def make_snake_map(map_x, map_y, snake_location_1, snake_location_2, f_location, score):
+def make_snake_map(map_x, map_y, snake_location_1, snake_location_2, f_location, score, players):
     snake_map = []
     for i in range(map_y):
         snake_map.append([])
@@ -26,15 +26,18 @@ def make_snake_map(map_x, map_y, snake_location_1, snake_location_2, f_location,
         snake_map[snake_location_2[i][0]][snake_location_2[i][1]] = '░'
     snake_map[f_location[0]][f_location[1]] = '☼'
 
-    display_map(snake_map, map_x, snake_location_1, snake_location_2, score)
+    display_map(snake_map, map_x, score, players)
 
-
-def display_map(snake_map, map_x, snake_location_1, snake_location_2, score):
+def display_map(snake_map, map_x, score, players):
     control_msg = 'Arrow Keys Control Snake'
     exit_msg = '***Press q To End Game***'
     snake_msg = '[ASCII Snake!!]'
     p1_score = '[P1 Score: ' + str(score[0]) + ']'
-    p2_score = '[P2 Score: ' + str(score[1]) + ']'
+    if players == 2:
+        p2_score = '[P2 Score: ' + str(score[1]) + ']'
+    else:
+        if score[0] > score[1]: score[1] = score[0]
+        p2_score = '[High Score: ' + str(score[1]) + ']'
     score_len = len(p1_score) + len(p2_score)
 
     print(f"    ╔{'═' * (map_x - len(snake_msg) // 2)}{snake_msg}{'═' * (map_x - len(snake_msg) // 2)}╗")
@@ -48,7 +51,6 @@ def display_map(snake_map, map_x, snake_location_1, snake_location_2, score):
     print(f"    ║{' ' * (map_x - len(exit_msg) // 2)}{exit_msg}{' ' * (map_x - len(exit_msg) // 2)}║")
     print(f"    ╚{'═' * (map_x * 2 + 1)}╝")
 
-
 def new_fruit_location(map_x, map_y, snake_location):
     while True:
         x = [0, 0]
@@ -56,16 +58,18 @@ def new_fruit_location(map_x, map_y, snake_location):
         x[1] = random.randint(0, map_x - 1)
         if not x in snake_location: return x
 
-
 def eat_fruit(snake_loc, fruit_loc):
     return snake_loc == fruit_loc
 
-
 def eat_tail(snake_location):
-    if snake_location[0] in snake_location[3:]:
+    if snake_location[0] in snake_location[4:]:
         return True
     return False
 
+def eat_other(snake_1, snake_2):
+    if snake_1[0] in snake_2:
+        return True
+    return False
 
 def move_head(direction, snake_location, map_x, map_y):
     if direction == 'n':
@@ -77,34 +81,34 @@ def move_head(direction, snake_location, map_x, map_y):
     elif direction == 'w':
         snake_location[0][1] = (snake_location[0][1] - 1) % map_x
 
-
 def move_body(snake_location):
     for i in range(len(snake_location), 1, -1):
         snake_location[i - 1] = list(snake_location[i - 2])
-
 
 def grow_snake(snake_location, grow_amount):
     for _ in range(grow_amount):
         snake_location.append(list(snake_location[0]))
 
-def game_loop_2():
+def game_loop(players, score):
     MAP_X = 30
     MAP_Y = 20
     SPEED = .15
-    GROW_AMOUNT = 1
+    GROW_AMOUNT = 10
     SCORE_MULTI = 10
-    score = [0,0]
     snake_location_1 = [[0, 0]]
-    snake_location_2 = [[MAP_Y//2, 0]]
+    if players == 2:
+        snake_location_2 = [[MAP_Y//2, 0]]
+    else:
+        snake_location_2 = []
     fruit_location = new_fruit_location(MAP_X, MAP_Y, (snake_location_1 + snake_location_2))
     direction_1 = 'e'
     direction_2 = 'e'
 
     # input
     while True:
-        timer = time.time()
         key_1 = False
         key_2 = False
+        timer = time.time()
         while True:
             if not key_1:
                 if keyboard.is_pressed('up'):
@@ -141,20 +145,19 @@ def game_loop_2():
                         direction_2 = 'w'
                         key_2 = True
 
-
-            if keyboard.is_pressed('q'): return
+            if keyboard.is_pressed('q'): return score
 
             if (time.time() - timer) > SPEED: break
 
         # logic
-
-        if not (snake_location_1 or snake_location_2):
-            return score
-
         if snake_location_1:
             move_body(snake_location_1)
             move_head(direction_1, snake_location_1, MAP_X, MAP_Y)
-            if eat_tail(snake_location_1): snake_location_1 = []
+            if eat_tail(snake_location_1):
+                if players == 2:
+                    snake_location_1 = []
+                else:
+                    return score
         if snake_location_1:
             if eat_fruit(snake_location_1[0], fruit_location):
                 grow_snake(snake_location_1, GROW_AMOUNT)
@@ -171,12 +174,16 @@ def game_loop_2():
                 score[1] += SCORE_MULTI
                 fruit_location = new_fruit_location(MAP_X, MAP_Y, (snake_location_1 + snake_location_2))
 
-
-
+        if snake_location_1 and snake_location_2:
+            if eat_other(snake_location_1, snake_location_2) and eat_other(snake_location_2, snake_location_1):
+                return score
+            if eat_other(snake_location_1, snake_location_2): snake_location_1 = []
+            if eat_other(snake_location_2, snake_location_1): snake_location_2 = []
+        if not (snake_location_1 or snake_location_2): return score
 
         # grafix
         cls()
-        make_snake_map(MAP_X, MAP_Y, snake_location_1, snake_location_2, fruit_location, score)
+        make_snake_map(MAP_X, MAP_Y, snake_location_1, snake_location_2, fruit_location, score, players)
         # print(snake_location)
 
 def menu():
@@ -192,18 +199,18 @@ def menu():
            -------------------*by Sivert
 
 
-                1) Start Two Player
-                2) Return To Main
+                1) Play Game
+                2) Two Player
+                2) Exit Game
     ''')
     try:
         select = int(input("                Selection: "))
-        if 0 < select < 3:
+        if 0 < select < 4:
             return select
     except ValueError:
         return 0
 
-
-def game_over(score):
+def game_over(score, high_score):
     cls()
     print(f'''
 
@@ -211,9 +218,27 @@ def game_over(score):
 
         ***GAME OVER***
 
+    ''')
+    if score[0] > high_score:
+        print(f'''
+        New High Score!''')
+    print(f'''
+
+         Score: {score[0]}
+
 
     ''')
+    input("Press ENTER to continue:")
 
+def game_over_2(score):
+    cls()
+    print(f'''
+
+
+
+        ***GAME OVER***
+
+    ''')
     print(f'''
 
          P1 Score: {score[0]}
@@ -221,19 +246,23 @@ def game_over(score):
 
 
     ''')
-
     input("Press ENTER to continue:")
 
-
 def main():
+    high_score = 0
     while True:
         select = menu()
         if select == 1:
-            score = game_loop_2()
-            game_over(score)
+            score = [0, high_score]
+            score = game_loop(1, score)
+            game_over(score, high_score)
+            if score[0] > high_score: high_score = score[0]
         elif select == 2:
+            score = [0, 0]
+            score = game_loop(2, score)
+            game_over_2(score)
+        elif select == 3:
             return
-
 
 if __name__ == '__main__':
     main()

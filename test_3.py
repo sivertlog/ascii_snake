@@ -229,11 +229,12 @@ def menu():
 
 
                 1) Play Game
+                2) Two Player
                 2) Exit
     ''')
     try:
         select = int(input("                Selection: "))
-        if 0 < select < 3:
+        if 0 < select < 4:
             return select
     except ValueError:
         return 0
@@ -269,7 +270,7 @@ def main():
             score = game_loop_2(high_score)
             game_over(score, high_score)
             if score > high_score: high_score = score
-        elif select == 2:
+        elif select == 3:
             return
 
 
