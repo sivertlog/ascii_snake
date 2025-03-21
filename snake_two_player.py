@@ -29,7 +29,7 @@ def make_snake_map(map_x, map_y, snake_location_1, snake_location_2, f_location,
     display_map(snake_map, map_x, score, players)
 
 def display_map(snake_map, map_x, score, players):
-    control_msg = 'Arrow Keys Control Snake'
+    control_msg = 'Controls:    P1 Arrow Keys    P2 WASD'
     exit_msg = '***Press q To End Game***'
     snake_msg = '[ASCII Snake!!]'
     p1_score = '[P1 Score: ' + str(score[0]) + ']'
@@ -92,8 +92,8 @@ def grow_snake(snake_location, grow_amount):
 def game_loop(players, score):
     MAP_X = 30
     MAP_Y = 20
-    SPEED = .15
-    GROW_AMOUNT = 10
+    SPEED = .13
+    GROW_AMOUNT = 1
     SCORE_MULTI = 10
     snake_location_1 = [[0, 0]]
     if players == 2:
@@ -201,14 +201,13 @@ def menu():
 
                 1) Play Game
                 2) Two Player
-                2) Exit Game
+                3) Exit Game
     ''')
-    try:
-        select = int(input("                Selection: "))
-        if 0 < select < 4:
-            return select
-    except ValueError:
-        return 0
+    print("                Press Number: ")
+    while True:
+        if keyboard.is_pressed('1'): return 1
+        if keyboard.is_pressed('2'): return 2
+        if keyboard.is_pressed('3'): return 3
 
 def game_over(score, high_score):
     cls()
@@ -224,11 +223,13 @@ def game_over(score, high_score):
         New High Score!''')
     print(f'''
 
-         Score: {score[0]}
+          Score: {score[0]}
 
 
     ''')
-    input("Press ENTER to continue:")
+    print("   Press ENTER to continue:")
+    while True:
+        if keyboard.is_pressed('enter'): return
 
 def game_over_2(score):
     cls()
@@ -246,7 +247,9 @@ def game_over_2(score):
 
 
     ''')
-    input("Press ENTER to continue:")
+    print("   Press ENTER to continue:")
+    while True:
+        if keyboard.is_pressed('enter'): return
 
 def main():
     high_score = 0
